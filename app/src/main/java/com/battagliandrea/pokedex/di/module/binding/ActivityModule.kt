@@ -1,4 +1,4 @@
-package com.battagliandrea.pokedex.di.module
+package com.battagliandrea.pokedex.di.module.binding
 
 import com.battagliandrea.pokedex.di.scope.ActivityScope
 import com.battagliandrea.pokedex.ui.main.MainActivity

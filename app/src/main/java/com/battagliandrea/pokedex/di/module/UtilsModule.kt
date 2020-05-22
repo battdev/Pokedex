@@ -1,0 +1,31 @@
+package com.battagliandrea.pokedex.di.module
+
+import android.app.Application
+import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
+
+@Module
+open class UtilsModule {
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //          Context
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Provides
+    @Singleton
+    open fun provideApplicationContext(app: Application): Context = app
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //          GSON
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Provides
+    @Singleton
+    fun provideGson(): Gson = GsonBuilder().create()
+
+//    @Provides
+//    @Singleton
+//    open fun provideViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory = factory
+}
