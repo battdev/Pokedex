@@ -40,7 +40,8 @@ fun GetPokemonData.Result.map(): PokemonEntity{
 
     return PokemonEntity(
         id = id,
-        name = this.name
+        name = this.name,
+        image = id.toString()
     )
 }
 

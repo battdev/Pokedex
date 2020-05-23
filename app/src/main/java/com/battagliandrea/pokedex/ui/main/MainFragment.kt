@@ -5,17 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.battagliandrea.pokedex.R
 import com.battagliandrea.pokedex.di.viewmodel.InjectingSavedStateViewModelFactory
 import com.battagliandrea.pokedex.ext.getViewModel
+import com.battagliandrea.pokedex.ext.observe
+import com.battagliandrea.pokedex.ui.adapter.PokemonAdapter
+import com.battagliandrea.pokedex.ui.base.ViewState
+import com.battagliandrea.pokedex.ui.items.base.ListItem
+import com.battagliandrea.pokedex.ui.items.pokemon.OnPokemonItemClickListener
+import com.battagliandrea.pokedex.ui.utils.MarginItemDecorator
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_main.*
 import javax.inject.Inject
 
 
 class MainFragment : Fragment() {
 
     private lateinit var mViewModel: MainViewModel
+
+    @Inject
+    lateinit var mAdapter: PokemonAdapter
 
     @Inject
     lateinit var abstractFactory: InjectingSavedStateViewModelFactory
@@ -32,5 +44,48 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel = getViewModel<MainViewModel>(abstractFactory, savedInstanceState)
+        with(mViewModel) {
+            observe(listViewState){ renderPokemon(it) }
+        }
+
+        setupList()
+    }
+
+    private fun setupList(){
+        recyclerView.adapter = mAdapter
+        recyclerView.addItemDecoration(MarginItemDecorator(resources.getDimension(R.dimen.default_quarter_padding).toInt()))
+
+        val lm = recyclerView.layoutManager as GridLayoutManager
+        lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when(position){
+                    0 -> 2
+                    else -> 1
+                }
+            }
+        }
+
+        mAdapter.onItemClickListener = object : OnPokemonItemClickListener {
+
+            override fun onItemClick(view: View, pokemonId: Int) {
+
+            }
+        }
+    }
+
+    private fun renderPokemon(state: MainViewState.PokemonList){
+        with(state){
+            when(listViewState){
+                is ViewState.Success -> {
+                    mAdapter.updateList(data = listViewState.data.orEmpty())
+                }
+                is ViewState.Error -> {
+                    Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
+                }
+                is ViewState.Loading -> {
+                    Toast.makeText(context, "LOADING", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }

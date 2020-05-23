@@ -1,8 +1,11 @@
 package com.battagliandrea.pokedex.ui.main
 
+import android.content.Context
 import androidx.lifecycle.*
 import com.battagliandrea.pokedex.di.viewmodel.AssistedSavedStateViewModelFactory
 import com.battagliandrea.pokedex.ui.base.ViewState
+import com.battagliandrea.pokedex.ui.items.pokemon.toItems
+import com.battagliandrea.pokedex.ui.items.title.TitleItem
 import com.battagliandrea.pokedex.usecase.ObservePokemonUseCase
 import com.battagliandrea.pokedex.usecase.SyncPokemonUseCase
 import com.squareup.inject.assisted.Assisted
@@ -12,6 +15,7 @@ import kotlinx.coroutines.flow.collect
 
 open class MainViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
+    private val context: Context,
     private val observePokemonUseCase: ObservePokemonUseCase,
     private val syncPokemonUseCase: SyncPokemonUseCase
 ) : ViewModel()
@@ -38,9 +42,13 @@ open class MainViewModel @AssistedInject constructor(
         viewModelScope.launch {
             try {
                 observePokemonUseCase().collect { pokemon ->
-                    pokemon.forEach {
-                        println("${it.id}.${it.name}")
-                    }
+
+                    val data = pokemon.toItems()
+                    data.add(0, TitleItem(text = "Pokedex"))
+
+                    _listViewState.value = MainViewState.PokemonList(
+                        listViewState = ViewState.Success(data = data)
+                    )
                 }
             } catch (e: Exception){
                 e.printStackTrace()
@@ -57,6 +65,7 @@ open class MainViewModel @AssistedInject constructor(
             e.printStackTrace()
         }
     }
+
 
     override fun onCleared() {
         super.onCleared()
