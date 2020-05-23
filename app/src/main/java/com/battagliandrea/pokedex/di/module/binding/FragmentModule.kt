@@ -1,6 +1,7 @@
 package com.battagliandrea.pokedex.di.module.binding
 
 import com.battagliandrea.pokedex.di.scope.FragmentScope
+import com.battagliandrea.pokedex.ui.details.DetailsFragment
 import com.battagliandrea.pokedex.ui.main.MainFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -11,4 +12,8 @@ abstract class FragmentModule {
     @FragmentScope
     @ContributesAndroidInjector
     abstract fun mainFragment(): MainFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    abstract fun detailsFragment(): DetailsFragment
 }

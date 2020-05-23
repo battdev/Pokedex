@@ -6,7 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.battagliandrea.pokedex.R
 import com.battagliandrea.pokedex.di.viewmodel.InjectingSavedStateViewModelFactory
@@ -14,7 +18,6 @@ import com.battagliandrea.pokedex.ext.getViewModel
 import com.battagliandrea.pokedex.ext.observe
 import com.battagliandrea.pokedex.ui.adapter.PokemonAdapter
 import com.battagliandrea.pokedex.ui.base.ViewState
-import com.battagliandrea.pokedex.ui.items.base.ListItem
 import com.battagliandrea.pokedex.ui.items.pokemon.OnPokemonItemClickListener
 import com.battagliandrea.pokedex.ui.utils.MarginItemDecorator
 import com.battagliandrea.pokedex.ui.utils.PaginationListener
@@ -34,7 +37,10 @@ class MainFragment : Fragment() {
     lateinit var abstractFactory: InjectingSavedStateViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+        return view
     }
 
     override fun onAttach(context: Context) {
@@ -81,6 +87,10 @@ class MainFragment : Fragment() {
 
             override fun onItemClick(view: View, pokemonId: Int) {
 
+                val action = MainFragmentDirections.actionMainFragmentToDetailsFragment(pokemonId = pokemonId)
+                val extras: FragmentNavigator.Extras = FragmentNavigatorExtras(view to "${pokemonId}")
+
+                findNavController().navigate(action, extras)
             }
         }
     }

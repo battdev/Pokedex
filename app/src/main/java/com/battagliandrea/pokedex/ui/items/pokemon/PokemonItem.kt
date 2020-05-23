@@ -1,7 +1,7 @@
 package com.battagliandrea.pokedex.ui.items.pokemon
 
 import com.battagliandrea.pokedex.BuildConfig
-import com.battagliandrea.pokedex.domain.PokemonEntity
+import com.battagliandrea.pokedex.domain.entity.PokemonEntity
 import com.battagliandrea.pokedex.ui.items.base.ListItem
 
 data class PokemonItem (

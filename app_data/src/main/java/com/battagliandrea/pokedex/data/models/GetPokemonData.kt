@@ -1,7 +1,7 @@
-package com.battagliandrea.pokedex.data
+package com.battagliandrea.pokedex.data.models
 
 
-import com.battagliandrea.pokedex.domain.PokemonEntity
+import com.battagliandrea.pokedex.domain.entity.PokemonEntity
 import com.google.gson.annotations.SerializedName
 
 data class GetPokemonData(
@@ -30,7 +30,7 @@ fun GetPokemonData.transform(): List<PokemonEntity>{
         .toList()
 }
 
-fun GetPokemonData.Result.map(): PokemonEntity{
+fun GetPokemonData.Result.map(): PokemonEntity {
     var id = 0
     try{
         id = this.url.substring(0, this.url.length - 1).split("/").last().toInt()

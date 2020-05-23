@@ -1,8 +1,9 @@
-package com.battagliandrea.pokedex.data
+package com.battagliandrea.pokedex.data.repository
 
 
-import com.battagliandrea.pokedex.domain.PokemonEntity
-import com.battagliandrea.pokedex.domain.PokemonRepository
+import com.battagliandrea.pokedex.data.datasource.PokeApiDataSource
+import com.battagliandrea.pokedex.domain.entity.PokemonEntity
+import com.battagliandrea.pokedex.domain.repository.PokemonRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +24,6 @@ open class PokemonRepositoryImpl @Inject constructor(
     }
 
     override suspend fun get(id: Int): PokemonEntity {
-        TODO("Not yet implemented")
+        return pokeApiDataSource.getPokemon(id= id)
     }
 }

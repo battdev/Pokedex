@@ -1,7 +1,7 @@
 package com.battagliandrea.pokedex.di.module.data
 
 
-import com.battagliandrea.pokedex.data.PokeApiDataSource
+import com.battagliandrea.pokedex.data.datasource.PokeApiDataSource
 import com.battagliandrea.pokedex.datasource.PokeApiDataSourceImpl
 import dagger.Module
 import dagger.Provides

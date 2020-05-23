@@ -1,4 +1,6 @@
-package com.battagliandrea.pokedex.domain
+package com.battagliandrea.pokedex.domain.repository
+
+import com.battagliandrea.pokedex.domain.entity.PokemonEntity
 
 interface PokemonRepository {
 

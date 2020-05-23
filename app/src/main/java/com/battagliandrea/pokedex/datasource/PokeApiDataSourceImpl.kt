@@ -1,8 +1,9 @@
 package com.battagliandrea.pokedex.datasource
 
-import com.battagliandrea.pokedex.data.PokeApiDataSource
-import com.battagliandrea.pokedex.data.transform
-import com.battagliandrea.pokedex.domain.PokemonEntity
+import com.battagliandrea.pokedex.data.datasource.PokeApiDataSource
+import com.battagliandrea.pokedex.data.models.map
+import com.battagliandrea.pokedex.data.models.transform
+import com.battagliandrea.pokedex.domain.entity.PokemonEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,6 +18,13 @@ class PokeApiDataSourceImpl @Inject constructor(
                 it.body()
                     ?.transform()
                     .orEmpty()
+            }
+    }
+
+    override suspend fun getPokemon(id: Int): PokemonEntity {
+        return pokeApiContract.getPokemon(id = id)
+            .let {
+                it.body()!!.transform()
             }
     }
 }

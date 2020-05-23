@@ -11,7 +11,7 @@ class PokemonItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun render(item: PokemonItem, listener: OnPokemonItemClickListener? = null) = with(itemView) {
 
-        card.transitionName = "${item.id}"
+        ivAvatar.transitionName = "${item.id}"
 
         tvName.text = item.name.capitalize()
         tvId.text = String.format("#%03d", item.id)
@@ -24,8 +24,10 @@ class PokemonItemVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 .dontAnimate())
             .into(ivAvatar)
 
+
+
         itemView.setOnClickListener {
-            listener?.onItemClick(card, item.id)
+            listener?.onItemClick(ivAvatar, item.id)
         }
     }
 }
