@@ -17,6 +17,7 @@ import com.battagliandrea.pokedex.ui.base.ViewState
 import com.battagliandrea.pokedex.ui.items.base.ListItem
 import com.battagliandrea.pokedex.ui.items.pokemon.OnPokemonItemClickListener
 import com.battagliandrea.pokedex.ui.utils.MarginItemDecorator
+import com.battagliandrea.pokedex.ui.utils.PaginationListener
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_main.*
 import javax.inject.Inject
@@ -58,12 +59,23 @@ class MainFragment : Fragment() {
         val lm = recyclerView.layoutManager as GridLayoutManager
         lm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return when(position){
-                    0 -> 2
-                    else -> 1
-                }
+                return mAdapter.getSpanSize(position)
             }
         }
+
+        recyclerView.addOnScrollListener(object : PaginationListener(lm) {
+            override fun loadMoreItems() {
+                mViewModel.load()
+            }
+
+            override fun isLastPage(): Boolean {
+                return mViewModel.isLastPage
+            }
+
+            override fun isLoading(): Boolean {
+                return mViewModel.isLoading
+            }
+        })
 
         mAdapter.onItemClickListener = object : OnPokemonItemClickListener {
 
@@ -83,7 +95,7 @@ class MainFragment : Fragment() {
                     Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
                 }
                 is ViewState.Loading -> {
-                    Toast.makeText(context, "LOADING", Toast.LENGTH_SHORT).show()
+                    mAdapter.showLoadingItem()
                 }
             }
         }
