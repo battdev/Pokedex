@@ -15,7 +15,10 @@ import com.battagliandrea.pokedex.R
 import com.battagliandrea.pokedex.di.viewmodel.InjectingSavedStateViewModelFactory
 import com.battagliandrea.pokedex.ext.getViewModel
 import com.battagliandrea.pokedex.ext.observe
+import com.battagliandrea.pokedex.ui.adapter.StatAdapter
+import com.battagliandrea.pokedex.ui.adapter.TypeAdapter
 import com.battagliandrea.pokedex.ui.base.ViewState
+import com.battagliandrea.pokedex.ui.utils.MarginItemDecorator
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -26,6 +29,7 @@ import com.bumptech.glide.request.target.Target
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_details.*
+import kotlinx.android.synthetic.main.fragment_details_body.*
 import kotlinx.android.synthetic.main.fragment_details_header.*
 import javax.inject.Inject
 
@@ -35,6 +39,12 @@ class DetailsFragment : Fragment() {
     private lateinit var mViewModel: DetailsViewModel
 
     val args: DetailsFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var statAdapter: StatAdapter
+
+    @Inject
+    lateinit var typeAdapter: TypeAdapter
 
     @Inject
     lateinit var abstractFactory: InjectingSavedStateViewModelFactory
@@ -59,20 +69,26 @@ class DetailsFragment : Fragment() {
         mViewModel = getViewModel<DetailsViewModel>(abstractFactory, savedInstanceState)
         with(mViewModel) {
             observe(header){ renderHeader(it)}
+            observe(body){ renderBody(it)}
         }
+
+        setupToolbar()
+        setupTypeList()
+        setupStatList()
 
         args.pokemonId.also { id ->
             restoreTransition(id)
             mViewModel.pokeId = id
         }
+
     }
 
     private fun renderHeader(state: DetailsViewState.Header){
         with(state){
-            when(pokemonDataViewState){
+            when(dataViewState){
                 is ViewState.Success -> {
-                    tvName.text = pokemonDataViewState.data?.name.orEmpty().capitalize()
-                    tvId.text = String.format("#%03d", pokemonDataViewState.data?.id)
+                    toolbar.title = dataViewState.data?.name.orEmpty().capitalize()
+                    tvId.text = String.format("#%03d", dataViewState.data?.id)
                 }
                 is ViewState.Error -> {
                     Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show()
@@ -84,18 +100,34 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    private fun renderBody(state: DetailsViewState.Body){
+        with(state){
+            when(typeViewState){
+                is ViewState.Success -> {
+                    typeAdapter.updateList(data = typeViewState.data.orEmpty())
+                }
+            }
+
+            when(statsViewState){
+                is ViewState.Success -> {
+                    statAdapter.updateList(data = statsViewState.data.orEmpty())
+                }
+            }
+        }
+    }
+
     @SuppressLint("ResourceAsColor")
     private fun initTransition(){
         postponeEnterTransition()
 
-        val transformationEnter: MaterialContainerTransform = MaterialContainerTransform(requireContext()).apply {
+        val transformationEnter: MaterialContainerTransform = MaterialContainerTransform().apply {
             fadeMode = MaterialContainerTransform.FADE_MODE_CROSS
             duration = 250
             scrimColor = android.R.color.transparent
         }
         sharedElementEnterTransition = transformationEnter
 
-        val transformationReturn: MaterialContainerTransform = MaterialContainerTransform(requireContext()).apply {
+        val transformationReturn: MaterialContainerTransform = MaterialContainerTransform().apply {
             fadeMode = MaterialContainerTransform.FADE_MODE_IN
             duration = 250
             scrimColor = android.R.color.transparent
@@ -124,4 +156,20 @@ class DetailsFragment : Fragment() {
             })
             .into(ivAvatar)
     }
+
+    private fun setupToolbar(){
+        toolbar.setTitleTextAppearance(activity, R.style.TextStyle_ToolbatTitle)
+        toolbar.title = String()
+    }
+
+    private fun setupTypeList(){
+        rvType.adapter = typeAdapter
+        rvType.addItemDecoration(MarginItemDecorator(resources.getDimension(R.dimen.default_quarter_padding).toInt()))
+    }
+
+    private fun setupStatList(){
+        rvStat.adapter = statAdapter
+        rvStat.addItemDecoration(MarginItemDecorator(resources.getDimension(R.dimen.default_quarter_padding).toInt()))
+    }
+
 }

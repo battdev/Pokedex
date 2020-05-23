@@ -14,41 +14,22 @@
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:contentScrim="@color/primaryDarkColor"
             app:expandedTitleGravity="top"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <include layout="@layout/fragment_details_header"/>
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+
                 app:layout_collapseMode="pin"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextStyle.B1"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec ipsum nibh. Sed eleifend quam id lectus eleifend, id pretium ex ultricies. Cras at arcu quam. Donec tincidunt lacus eu ipsum aliquet, et malesuada risus iaculis. Mauris at luctus nibh. Sed non nulla rutrum, fringilla erat et, consectetur leo. Nullam cursus fermentum arcu, non sagittis enim dapibus vitae. Duis mollis eros enim, in varius tortor convallis sit amet. Suspendisse iaculis sapien turpis, ut condimentum orci accumsan nec. Morbi ut nunc eget eros varius aliquam ac eu nulla. Nulla convallis mi non volutpat suscipit. Fusce eu felis sodales, imperdiet elit a, ultricies nisi.
-
-Ut molestie mollis lacus sit amet elementum. Suspendisse et ex nec neque aliquam maximus et vel sem. Nulla vitae porta lectus, ut tempor lacus. Nulla sodales pellentesque augue, at finibus magna tempus eu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis vel ex leo. Etiam venenatis facilisis rhoncus. Curabitur et neque vel nulla dignissim congue nec ut est. Duis sodales viverra ornare. Phasellus nisl nisl, cursus nec gravida quis, commodo lobortis elit.
-
-Maecenas eget ipsum sed diam finibus porttitor eget ac felis. Integer id massa felis. Donec mollis purus facilisis purus vehicula, non consequat justo feugiat. Quisque ac arcu maximus, mollis est at, tristique eros. Proin tincidunt eget justo at laoreet. Mauris quis dapibus nulla, eu dictum dolor. Fusce dictum interdum turpis, quis rhoncus mauris tristique nec. Nullam pellentesque nulla id lorem dignissim, in dignissim erat interdum. Proin hendrerit, sapien at sollicitudin faucibus, ante erat dignissim mauris, ac efficitur orci nisl nec augue. Etiam diam augue, pretium ut dolor ut, rhoncus pulvinar nibh. Nullam id congue elit. Quisque tincidunt libero enim, in feugiat augue sodales quis. Ut suscipit feugiat nibh ut gravida. In vitae interdum sapien.
-
-Aliquam eu velit tincidunt, maximus sapien ac, dignissim justo. Aliquam ut vulputate lorem. Maecenas dignissim, sapien porttitor aliquet pharetra, libero erat venenatis mauris, id mollis lacus metus sit amet odio. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum imperdiet lacus quis laoreet ullamcorper. Integer sagittis erat eu porttitor luctus. Cras laoreet magna eget posuere faucibus. Phasellus vehicula luctus nunc, id placerat nisl luctus eu. In et pellentesque nisi. Quisque non enim at leo posuere porta ut vel tortor. Maecenas vestibulum finibus felis eget congue. Praesent ex leo, imperdiet sit amet pulvinar id, cursus vitae nunc. Sed pretium, lorem sed euismod consectetur, orci lorem placerat lacus, quis dignissim odio augue ac odio. Vivamus sed quam ac enim tempus ultricies vitae vel diam.
-
-In hac habitasse platea dictumst. Vestibulum semper metus imperdiet nunc imperdiet finibus. Integer egestas tortor ac lectus tincidunt luctus. Aliquam ligula libero, vulputate a velit id, sagittis dignissim arcu. Nulla mattis ornare mattis. Nulla facilisi. Donec aliquam convallis sem, vitae sollicitudin libero efficitur et. Nulla ac massa nisi. Etiam quis porta risus."/>
-
-    </androidx.core.widget.NestedScrollView>
+    <include layout="@layout/fragment_details_body"/>
     
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

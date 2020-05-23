@@ -54,4 +54,8 @@
         <item name="fontFamily">@font/raleway_medium</item>
     </style>
 
+    <style name="TextStyle.ToolbatTitle">
+        <item name="android:fontFamily">@font/raleway_semibold</item>
+    </style>
+
 </resources>

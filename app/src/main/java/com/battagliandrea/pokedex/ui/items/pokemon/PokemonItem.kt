@@ -3,6 +3,7 @@ package com.battagliandrea.pokedex.ui.items.pokemon
 import com.battagliandrea.pokedex.BuildConfig
 import com.battagliandrea.pokedex.domain.entity.PokemonEntity
 import com.battagliandrea.pokedex.ui.items.base.ListItem
+import com.battagliandrea.pokedex.ui.items.stat.StatItem
 
 data class PokemonItem (
     override var id : Int = 0,
@@ -10,15 +11,15 @@ data class PokemonItem (
     var image: String = String()
 ) : ListItem()
 
-fun List<PokemonEntity>.toItems(): MutableList<ListItem>{
+fun List<PokemonEntity>.toPokemonItems(): MutableList<ListItem>{
     return this
         .asSequence()
         .filterNotNull()
-        .map { it.toItemModel() }
+        .map { it.toPokemonItem() }
         .toMutableList()
 }
 
-fun PokemonEntity.toItemModel(): ListItem{
+fun PokemonEntity.toPokemonItem(): ListItem{
     return PokemonItem(
         id = this.id,
         name = this.name,

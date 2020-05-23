@@ -6,13 +6,12 @@ import com.battagliandrea.pokedex.R
 import com.battagliandrea.pokedex.di.viewmodel.AssistedSavedStateViewModelFactory
 import com.battagliandrea.pokedex.ui.base.SingleLiveEvent
 import com.battagliandrea.pokedex.ui.base.ViewState
-import com.battagliandrea.pokedex.ui.items.pokemon.toItems
+import com.battagliandrea.pokedex.ui.items.pokemon.toPokemonItems
 import com.battagliandrea.pokedex.ui.items.title.TitleItem
 import com.battagliandrea.pokedex.usecase.GetPokemonUseCase
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 
 open class MainViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
@@ -47,7 +46,7 @@ open class MainViewModel @AssistedInject constructor(
                     _listViewState.value = _listViewState.value?.copy(listViewState = ViewState.Loading())
 
                     val pokemon = withContext(Dispatchers.Default) { getPokemonUseCase() }
-                    val data = pokemon.toItems()
+                    val data = pokemon.toPokemonItems()
                     data.add(0, TitleItem(text = context.getString(R.string.pokedex)))
 
                     isLoading = false
