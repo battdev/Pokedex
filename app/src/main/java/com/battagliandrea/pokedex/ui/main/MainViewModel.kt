@@ -38,9 +38,9 @@ open class MainViewModel @AssistedInject constructor(
     }
 
     fun load(){
-        try{
-            if(isLoading.not()){
-                viewModelScope.launch {
+        if(isLoading.not()){
+            viewModelScope.launch {
+                try{
 
                     isLoading = true
                     _listViewState.value = _listViewState.value?.copy(listViewState = ViewState.Loading())
@@ -51,10 +51,10 @@ open class MainViewModel @AssistedInject constructor(
 
                     isLoading = false
                     _listViewState.value = _listViewState.value?.copy(listViewState = ViewState.Success(data = data))
+                } catch (e: Exception){
+                    e.printStackTrace()
                 }
             }
-        } catch (e: Exception){
-            e.printStackTrace()
         }
     }
 

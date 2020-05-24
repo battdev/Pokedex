@@ -34,8 +34,8 @@ open class DetailsViewModel @AssistedInject constructor(
     val body: LiveData<DetailsViewState.Body> = _body
 
     private fun load(){
-        try{
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try{
                 val pokemon = withContext(Dispatchers.Default) { getPokemonDetailsUseCase(pokeId) }
                 _header.value = DetailsViewState.Header(dataViewState = ViewState.Success(data = pokemon))
 
@@ -43,9 +43,9 @@ open class DetailsViewModel @AssistedInject constructor(
                     typeViewState = ViewState.Success(data = pokemon.toTypeItem()),
                     statsViewState = ViewState.Success(data = pokemon.toStatItem())
                 )
+            } catch (e: Exception){
+                e.printStackTrace()
             }
-        } catch (e: Exception){
-            e.printStackTrace()
         }
     }
 

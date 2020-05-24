@@ -137,23 +137,14 @@ class DetailsFragment : Fragment() {
 
     private fun restoreTransition(id: Int){
         ivAvatar.transitionName = id.toString()
+        startPostponedEnterTransition()
 
         Glide.with(this@DetailsFragment)
             .load("${BuildConfig.apiResUrl}${id}.png")
             .apply(RequestOptions()
                 .centerInside()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .dontAnimate())
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                    return false
-                }
-
-                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    startPostponedEnterTransition()
-                    return false
-                }
-            })
             .into(ivAvatar)
     }
 
