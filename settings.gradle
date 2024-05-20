@@ -1,5 +1,0 @@
-rootProject.name='Pokedex'
-include ':app'
-include ':app_data'
-include ':app_domain'
-include ':app_usecase'
